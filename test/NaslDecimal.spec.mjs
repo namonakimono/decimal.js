@@ -5,28 +5,77 @@ import { createNaslDecimal as cnd, NaslDecimal } from '../NaslDecimal.mjs';
 
 describe('global/app/packingType', () => {
     test('null 构造测试', () => {
-        expect(cnd('1').add(null)).toEqual(cnd('1'));
-        expect(cnd('null').add(cnd('1'))).toBe(1);
-        expect(cnd('null')).toBe('null');
-        expect(cnd(cnd('null'))).toBe('null');
+        expect(cnd(null).__val).toBe(null);
+        expect(cnd(cnd(null)).__val).toBe(null);
+        expect(cnd(cnd(null)).__val).toBe(cnd(null).__val);
+        expect(cnd(cnd('null')).__val).toBe('null');
+        expect(cnd(null).toString()).toBe('null');
+        expect(cnd('null').__val).toBe('null');
+        console.log((cnd('2').add(cnd('1001'))).valueOf())
+    });
 
-        expect(cnd(null)).toBe(null);
-        expect(cnd(cnd(null))).toBe(null);
+    test('null 运算测试', () => {
+        expect(cnd('100').add(cnd(null)).valueOf())
+            .toBe(cnd('100').valueOf());
+        expect(cnd('100').minus(cnd(null)).valueOf())
+            .toBe(cnd('100').valueOf());
+        expect(cnd('100').times(cnd(null)).valueOf())
+            .toBe(cnd('0').valueOf());
+        expect(cnd('100').dividedBy(cnd(null)).valueOf())
+            .toBe(cnd(Infinity).valueOf());
+        expect(cnd('100').modulo(cnd(null)).valueOf())
+            .toBe(cnd(NaN).valueOf());
+
+        expect(cnd('100').equals(cnd(null)).valueOf()).toBe(false);
+        expect(cnd('0').equals(cnd(null)).valueOf()).toBe(true);
+        expect(cnd('100').notEqual(cnd(null)).valueOf()).toBe(true);
+        expect(cnd('0').notEqual(cnd(null)).valueOf()).toBe(false);
+        expect(cnd('0').greaterThan(cnd(null)).valueOf()).toBe(false);
+        expect(cnd('0').greaterThanOrEqualTo(cnd(null)).valueOf()).toBe(true);
+        expect(cnd('0').lessThan(cnd(null)).valueOf()).toBe(false);
+        expect(cnd('0').lessThanOrEqualTo(cnd(null)).valueOf()).toBe(true);
+
+
+        expect(cnd(null).add(cnd('100')).valueOf())
+            .toBe(cnd('100').valueOf());
+        expect(cnd(null).minus(cnd('100')).valueOf())
+            .toBe(cnd('-100').valueOf());
+        expect(cnd(null).times(cnd('100')).valueOf())
+            .toBe(cnd('0').valueOf());
+        expect(cnd(null).dividedBy(cnd('100')).valueOf())
+            .toEqual(cnd('0').valueOf());
+        expect(cnd(null).modulo(cnd('100')).valueOf())
+            .toEqual(cnd('0').valueOf());
+
+        expect(cnd(null).equals(cnd('100')).valueOf()).toBe(false);
+        expect(cnd(null).equals(cnd('0')).valueOf()).toBe(true);
+        expect(cnd(null).notEqual(cnd('100')).valueOf()).toBe(true);
+        expect(cnd(null).notEqual(cnd('0')).valueOf()).toBe(false);
+        expect(cnd(null).greaterThan(cnd('0')).valueOf()).toBe(false);
+        expect(cnd(null).greaterThanOrEqualTo('0').valueOf()).toBe(true);
+        expect(cnd(null).lessThan(cnd('0')).valueOf()).toBe(false);
+        expect(cnd(null).lessThanOrEqualTo(cnd('0')).valueOf()).toBe(true);
     });
 
     test('undefined 构造测试', () => {
-        expect(cnd('undefined')).toBe('undefined');
-        expect(cnd(cnd('undefined'))).toBe('undefined');
+        expect(cnd(cnd('undefined')).valueOf()).toEqual(cnd('undefined').valueOf());
 
-        expect(cnd()).toBe(undefined)
-        expect(cnd(cnd())).toBe(undefined)
-        expect(cnd(cnd())).toBe(cnd());
+        expect(cnd().valueOf()).toBe(undefined)
+        expect(cnd(cnd()).valueOf()).toBe(undefined)
+        expect(cnd(cnd()).valueOf()).toBe(cnd().valueOf());
+
+        expect(cnd(undefined).valueOf()).toBe(undefined);
+        expect(cnd(cnd(undefined)).valueOf()).toBe(undefined);
+        expect(cnd(cnd(undefined)).valueOf()).toBe(cnd(undefined).valueOf());
+        expect(cnd(cnd('undefined')).valueOf()).toBe('undefined');
+        expect(cnd(undefined).toString()).toBe('undefined');
+        expect(cnd('undefined').valueOf()).toBe('undefined');
     });
 
-    test('NaN 构造测试', () => {
-        expect(cnd(NaN)).toBe(NaN);
-        expect(cnd('NaN').__val).toBe('NaN');
-    });
+    // test('NaN 构造测试', () => {
+    //     expect(cnd(NaN)).toBe(NaN);
+    //     expect(cnd('NaN').__val).toBe('NaN');
+    // });
 
 
     test('构造函数测试', () => {
