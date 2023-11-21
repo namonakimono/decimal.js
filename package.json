@@ -16,7 +16,7 @@
     "bigint",
     "bignum"
   ],
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/MikeMcl/decimal.js.git"
   },
@@ -44,12 +44,17 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "jest",
+    "test-nasl-decimal": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/NaslDecimal.spec.mjs"
   },
   "types": "decimal.d.ts",
   "files": [
     "decimal.js",
     "decimal.mjs",
-    "decimal.d.ts"
-  ]
+    "decimal.d.ts",
+    "NaslDecimal.js"
+  ],
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
