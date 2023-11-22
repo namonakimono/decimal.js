@@ -1,65 +1,56 @@
-import {jest} from '@jest/globals';
-
+import util from 'util';
 import { createNaslDecimal as cnd, NaslDecimal } from '../NaslDecimal.mjs';
 
 
 describe('global/app/packingType', () => {
     test('null 构造测试', () => {
-        expect(cnd(null).__val).toBe(null);
-        expect(cnd(cnd(null)).__val).toBe(null);
-        expect(cnd(cnd(null)).__val).toBe(cnd(null).__val);
-        expect(cnd(cnd('null')).__val).toBe('null');
-        expect(cnd(null).toString()).toBe('null');
-        expect(cnd('null').__val).toBe('null');
-        console.log((cnd('2').add(cnd('1001'))).valueOf())
+        expect(cnd(null).valueOf()).toBe(null);
+        expect(cnd(cnd(null)).valueOf()).toBe(null);
+        expect(cnd(cnd(null)).valueOf()).toBe(cnd(null).valueOf());
+        expect(cnd('null').valueOf()).toBe(null);
+        expect(cnd(cnd('null')).valueOf()).toBe(null);
+        expect(cnd(cnd('null')).toString()).toBe('null');
     });
 
     test('null 运算测试', () => {
-        expect(cnd('100').add(cnd(null)).valueOf())
-            .toBe(cnd('100').valueOf());
-        expect(cnd('100').minus(cnd(null)).valueOf())
-            .toBe(cnd('100').valueOf());
-        expect(cnd('100').times(cnd(null)).valueOf())
-            .toBe(cnd('0').valueOf());
-        expect(cnd('100').dividedBy(cnd(null)).valueOf())
-            .toBe(cnd(Infinity).valueOf());
-        expect(cnd('100').modulo(cnd(null)).valueOf())
-            .toBe(cnd(NaN).valueOf());
+        expect(cnd('100').add(cnd(null)).toNumber())
+            .toBe(100 + null);
+        expect(cnd('100').minus(cnd(null)).toNumber())
+            .toBe(100 - null);
+        expect(cnd('100').times(cnd(null)).toNumber())
+            .toBe(100 * null);
+        expect(cnd('100').dividedBy(cnd(null)).toNumber())
+            .toBe(100 / null);
+        expect(cnd('100').modulo(cnd(null)).toNumber())
+            .toBe(100 % null);
 
         expect(cnd('100').equals(cnd(null)).valueOf()).toBe(false);
-        expect(cnd('0').equals(cnd(null)).valueOf()).toBe(true);
-        expect(cnd('100').notEqual(cnd(null)).valueOf()).toBe(true);
-        expect(cnd('0').notEqual(cnd(null)).valueOf()).toBe(false);
-        expect(cnd('0').greaterThan(cnd(null)).valueOf()).toBe(false);
-        expect(cnd('0').greaterThanOrEqualTo(cnd(null)).valueOf()).toBe(true);
-        expect(cnd('0').lessThan(cnd(null)).valueOf()).toBe(false);
-        expect(cnd('0').lessThanOrEqualTo(cnd(null)).valueOf()).toBe(true);
+        expect(cnd('0').equals(cnd(null))).toBe(0 == null);
+        expect(cnd('100').notEqual(cnd(null))).toBe(100 != null);
+        expect(cnd('0').notEqual(cnd(null))).toBe(0 != null);
+        expect(cnd('0').greaterThan(cnd(null))).toBe(0 > null);
+        expect(cnd('0').greaterThanOrEqualTo(cnd(null))).toBe(0 >= null);
+        expect(cnd('0').lessThan(cnd(null))).toBe(0 < null);
+        expect(cnd('0').lessThanOrEqualTo(cnd(null))).toBe(0 <= null);
 
 
-        expect(cnd(null).add(cnd('100')).valueOf())
-            .toBe(cnd('100').valueOf());
-        expect(cnd(null).minus(cnd('100')).valueOf())
-            .toBe(cnd('-100').valueOf());
-        expect(cnd(null).times(cnd('100')).valueOf())
-            .toBe(cnd('0').valueOf());
-        expect(cnd(null).dividedBy(cnd('100')).valueOf())
-            .toEqual(cnd('0').valueOf());
-        expect(cnd(null).modulo(cnd('100')).valueOf())
-            .toEqual(cnd('0').valueOf());
+        expect(cnd(null).add(cnd('100')).valueOf()).toBe('100');
+        expect(cnd(null).minus(cnd('100')).valueOf()).toBe('-100');
+        expect(cnd(null).times(cnd('100')).valueOf()).toBe('0');
+        expect(cnd(null).dividedBy(cnd('100')).valueOf()).toBe('0');
+        expect(cnd(null).modulo(cnd('100')).valueOf()).toBe('0');
 
-        expect(cnd(null).equals(cnd('100')).valueOf()).toBe(false);
-        expect(cnd(null).equals(cnd('0')).valueOf()).toBe(true);
-        expect(cnd(null).notEqual(cnd('100')).valueOf()).toBe(true);
-        expect(cnd(null).notEqual(cnd('0')).valueOf()).toBe(false);
-        expect(cnd(null).greaterThan(cnd('0')).valueOf()).toBe(false);
-        expect(cnd(null).greaterThanOrEqualTo('0').valueOf()).toBe(true);
-        expect(cnd(null).lessThan(cnd('0')).valueOf()).toBe(false);
-        expect(cnd(null).lessThanOrEqualTo(cnd('0')).valueOf()).toBe(true);
+        expect(cnd(null).equals(cnd('100')).valueOf()).toBe(null == 100);
+        expect(cnd(null).equals(cnd('0')).valueOf()).toBe(null == 0);
+        expect(cnd(null).notEqual(cnd('100')).valueOf()).toBe(null != 100);
+        expect(cnd(null).notEqual(cnd('0')).valueOf()).toBe(null != 0);
+        expect(cnd(null).greaterThan(cnd('0')).valueOf()).toBe(null > 0);
+        expect(cnd(null).greaterThanOrEqualTo('0').valueOf()).toBe(null <= 0);
+        expect(cnd(null).lessThan(cnd('0')).valueOf()).toBe(null < 0);
+        expect(cnd(null).lessThanOrEqualTo(cnd('0')).valueOf()).toBe(null <= 0);
     });
 
     test('undefined 构造测试', () => {
-        expect(cnd(cnd('undefined')).valueOf()).toEqual(cnd('undefined').valueOf());
-
         expect(cnd().valueOf()).toBe(undefined)
         expect(cnd(cnd()).valueOf()).toBe(undefined)
         expect(cnd(cnd()).valueOf()).toBe(cnd().valueOf());
@@ -67,87 +58,164 @@ describe('global/app/packingType', () => {
         expect(cnd(undefined).valueOf()).toBe(undefined);
         expect(cnd(cnd(undefined)).valueOf()).toBe(undefined);
         expect(cnd(cnd(undefined)).valueOf()).toBe(cnd(undefined).valueOf());
-        expect(cnd(cnd('undefined')).valueOf()).toBe('undefined');
-        expect(cnd(undefined).toString()).toBe('undefined');
-        expect(cnd('undefined').valueOf()).toBe('undefined');
+        expect(cnd(cnd('undefined')).valueOf()).toBe(undefined);
+        expect(cnd('undefined').valueOf()).toBe(undefined);
+        expect(cnd(undefined).toJSON()).toBe('undefined');
+        expect(cnd(undefined).toNumber()).toBe(undefined);
+        expect(cnd(cnd('undefined')).valueOf()).toEqual(cnd('undefined').valueOf());
     });
 
-    // test('NaN 构造测试', () => {
-    //     expect(cnd(NaN)).toBe(NaN);
-    //     expect(cnd('NaN').__val).toBe('NaN');
-    // });
+    test('undefined 运算测试', () => {
+        expect(cnd('100').add(cnd(undefined)).valueOf()).toBe(NaN);
+        expect(cnd('100').add(cnd('undefined')).valueOf()).toBe(NaN);
+        expect(cnd('100').minus(cnd(undefined)).valueOf()).toBe(NaN);
+        expect(cnd('100').minus(cnd('undefined')).valueOf()).toBe(NaN);
+        expect(cnd('100').times(cnd(undefined)).equals(100 * undefined));
+        expect(cnd('100').times(cnd('undefined')).valueOf())
+            .toBe(100 * 'undefined');
+        expect(cnd('100').dividedBy(cnd(undefined)).valueOf())
+            .toBe(100 / undefined);
+        expect(cnd('100').modulo(cnd(undefined)).valueOf())
+            .toBe(100 % undefined);
+
+        expect(cnd('undefined').equals(cnd(undefined))).toBe(undefined == undefined);
+        expect(cnd('0').equals(cnd(undefined)).valueOf()).toBe(0 == undefined);
+        expect(cnd('100').notEqual(cnd(undefined)).valueOf()).toBe(100 != undefined);
+        expect(cnd('0').notEqual(cnd(undefined)).valueOf()).toBe(0 != undefined);
+        expect(cnd('0').greaterThan(cnd(undefined)).valueOf()).toBe(0 > undefined);
+        expect(cnd('0').greaterThanOrEqualTo(cnd(undefined)).valueOf()).toBe(0 >= undefined);
+        expect(cnd('0').lessThan(cnd(undefined)).valueOf()).toBe(0 < undefined);
+        expect(cnd('0').lessThanOrEqualTo(cnd(undefined)).valueOf()).toBe(0 <= undefined);
 
 
-    test('构造函数测试', () => {
+        expect(cnd(undefined).add(cnd('100')).valueOf())
+            .toBe(undefined + 100);
+        expect(cnd(undefined).minus(cnd('100')).valueOf())
+            .toBe(undefined - 100);
+        expect(cnd(undefined).times(cnd('100')).valueOf())
+            .toBe(undefined * 100);
+        expect(cnd(undefined).dividedBy(cnd('100')).valueOf())
+            .toEqual(undefined / 100);
+        expect(cnd(undefined).modulo(cnd('100')).valueOf())
+            .toEqual(undefined % 100);
 
-        // expect(cnd(cnd('undefined'))).toEqual(cnd('undefined'));
-        // expect(cnd('undefined').__str).toBe('undefined');
-
-        // expect(new NaslLong(new NaslLong())).toEqual(new NaslLong());
-        // expect(new NaslLong(new NaslLong('undefined'))).toEqual(new NaslLong());
-        // expect(new NaslLong(new NaslLong('undefined'))).toEqual(new NaslLong('undefined'));
-        // expect(new NaslLong(new NaslLong('undefined')).__str).toBe('undefined');
-
-
-        // expect(cnd(cnd())).toEqual(cnd());
-        // expect(cnd(cnd('null'))).toEqual(cnd());
-        // expect(cnd(cnd('null'))).toEqual(cnd('null'));
-        // expect(cnd('null').__str).toBe('null');
-
-        // expect(new NaslLong(new NaslLong())).toEqual(new NaslLong());
-        // expect(new NaslLong(new NaslLong('null'))).toEqual(new NaslLong());
-        // expect(new NaslLong(new NaslLong('null'))).toEqual(new NaslLong('null'));
-        // expect(new NaslLong(new NaslLong('null')).__str).toBe('null');
-
-        // expect(naslAdd(new NaslLong('10'), '2')).toBe(12);
+        expect(cnd(undefined).equals(cnd('100')).valueOf()).toBe(undefined == 100);
+        expect(cnd(undefined).equals(cnd('0')).valueOf()).toBe(undefined == 0);
+        expect(cnd(undefined).notEqual(cnd('100')).valueOf()).toBe(undefined != 100);
+        expect(cnd(undefined).notEqual(cnd('0')).valueOf()).toBe(undefined != 0);
+        expect(cnd(undefined).greaterThan(cnd('0')).valueOf()).toBe(undefined > 0);
+        expect(cnd(undefined).greaterThanOrEqualTo('0').valueOf()).toBe(undefined >= 0);
+        expect(cnd(undefined).lessThan(cnd('0')).valueOf()).toBe(undefined < 0);
+        expect(cnd(undefined).lessThanOrEqualTo(cnd('0')).valueOf()).toBe(undefined <= 0);
     });
-    // test('binaryOperations', () => {
-    //     // const errMsg = '除数不能为 0';
 
+    test('NaN 构造测试', () => {
+        expect(cnd(NaN).valueOf()).toBe(NaN);
+        expect(cnd(cnd(NaN)).valueOf()).toBe(NaN);
+        expect(cnd(cnd(NaN)).valueOf()).toBe(cnd(NaN).valueOf());
+        expect(cnd(cnd('NaN')).valueOf()).toBe(NaN);
+        expect(cnd('NaN').valueOf()).toBe(NaN);
+        expect(cnd(NaN).toJSON()).toBe('NaN');
+        expect(cnd(NaN).toNumber()).toBe(NaN);
+        expect(cnd(cnd('NaN')).valueOf()).toEqual(cnd('NaN').valueOf());
+    });
+
+    test('NaN 运算测试', () => {
+        expect(cnd('100').add(cnd(NaN)).valueOf()).toBe(NaN);
+        expect(cnd('100').add(cnd('NaN')).valueOf()).toBe(NaN);
+        expect(cnd('100').minus(cnd(NaN)).valueOf()).toBe(NaN);
+        expect(cnd('100').minus(cnd('NaN')).valueOf()).toBe(NaN);
+        expect(cnd('100').times(cnd(NaN)).equals(100 * NaN));
+        expect(cnd('100').times(cnd('NaN')).valueOf())
+            .toBe(100 * 'NaN');
+        expect(cnd('100').dividedBy(cnd(NaN)).valueOf())
+            .toBe(100 / NaN);
+        expect(cnd('100').modulo(cnd(NaN)).valueOf())
+            .toBe(100 % NaN);
+
+        expect(cnd('NaN').equals(cnd(NaN))).toBe(NaN == NaN);
+        expect(cnd('0').equals(cnd(NaN)).valueOf()).toBe(0 == NaN);
+        expect(cnd('100').notEqual(cnd(NaN)).valueOf()).toBe(100 != NaN);
+        expect(cnd('0').notEqual(cnd(NaN)).valueOf()).toBe(0 != NaN);
+        expect(cnd('0').greaterThan(cnd(NaN)).valueOf()).toBe(0 > NaN);
+        expect(cnd('0').greaterThanOrEqualTo(cnd(NaN)).valueOf()).toBe(0 >= NaN);
+        expect(cnd('0').lessThan(cnd(NaN)).valueOf()).toBe(0 < NaN);
+        expect(cnd('0').lessThanOrEqualTo(cnd(NaN)).valueOf()).toBe(0 <= NaN);
+
+
+        expect(cnd(NaN).add(cnd('100')).valueOf())
+            .toBe(NaN + 100);
+        expect(cnd(NaN).minus(cnd('100')).valueOf())
+            .toBe(NaN - 100);
+        expect(cnd(NaN).times(cnd('100')).valueOf())
+            .toBe(NaN * 100);
+        expect(cnd(NaN).dividedBy(cnd('100')).valueOf())
+            .toEqual(NaN / 100);
+        expect(cnd(NaN).modulo(cnd('100')).valueOf())
+            .toEqual(NaN % 100);
+
+        expect(cnd(NaN).equals(cnd('100')).valueOf()).toBe(NaN == 100);
+        expect(cnd(NaN).equals(cnd('0')).valueOf()).toBe(NaN == 0);
+        expect(cnd(NaN).notEqual(cnd('100')).valueOf()).toBe(NaN != 100);
+        expect(cnd(NaN).notEqual(cnd('0')).valueOf()).toBe(NaN != 0);
+        expect(cnd(NaN).greaterThan(cnd('0')).valueOf()).toBe(NaN > 0);
+        expect(cnd(NaN).greaterThanOrEqualTo('0').valueOf()).toBe(NaN >= 0);
+        expect(cnd(NaN).lessThan(cnd('0')).valueOf()).toBe(NaN < 0);
+        expect(cnd(NaN).lessThanOrEqualTo(cnd('0')).valueOf()).toBe(NaN <= 0);
+    });
+
+    test('运算精度测试', () => {
+        expect(cnd('10').add(cnd('2')).toNumber()).toBe(10 + 2);
+        expect(cnd('10').add(2).toNumber()).toBe(10 + 2);
+        expect(cnd('10').add('2').toNumber()).toBe(10 + 2);
+        expect(cnd('10').minus('2').toNumber()).toBe(10 - 2);
+        expect(cnd('10').times('2').toNumber()).toBe(10 * 2);
+        expect(cnd('10').dividedBy('0').toNumber()).toBe(10 / 0);
+        expect(cnd('0').modulo('10').toNumber()).toBe(0 % 10);
+        expect(cnd('10').equals('10')).toBe(10 == 10);
     //     // 不同类型运算
-    //     expect(sExp('*', '10', '0.12', 'NaslLong', 'NaslDecimal')?.__str).toBe('1.20');
-    //     expect(sExp('-', '10', '0.12', 'NaslLong', 'NaslDecimal')?.__str).toBe('9.88');
-    //     expect(sExp('-', '10', '0.12', 'NaslLong', 'String')?.__str).toBe('9.88');
-    //     expect(sExp('*', '10', '0.12', 'NaslLong', 'String')?.__str).toBe('1.20');
+    //     expect(cnd('10').times(cnd('0.12')).valueOf()).toBe('1.20');
+    //     expect(cnd('10').minus(cnd('0.12')).valueOf()).toBe('9.88');
 
     //     // 同类型运算
-    //     expect(sExp('/', '10', '2', 'NaslLong')?.__str).toBe('5');
-    //     expect(sExp('/', '12', '12', 'NaslLong')?.__str).toBe('1');
-    //     expect(sExp('/', '10', '3', 'NaslLong')?.__str).toBe('3.3333333333333333333');
-    //     // expect(() => sExp('/', '1', '0', 'NaslLong')).toThrow(errMsg);
-    //     // expect(() => sExp('/', '-0', '0', 'NaslLong')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '0', '0', 'NaslLong')).toThrow(errMsg);
+    //     expect(cnd('10').dividedBy(cnd('2')).valueOf()).toBe('5');
+    //     expect(cnd('12').dividedBy(cnd('12')).valueOf()).toBe('1');
+    //     expect(cnd('10').dividedBy(cnd('3')).valueOf()).toBe('3.3333333333333333333');
 
-    //     expect(sExp('/', '10', '2', 'NaslLong', 'String')?.__str).toBe('5');
-    //     // expect(() => sExp('/', '1', '0', 'NaslLong', 'String')).toThrow(errMsg);
-    //     // expect(() => sExp('/', '-0', '0', 'NaslLong', 'String')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '0', '0', 'NaslLong', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('/', '1', '0', 'NaslLong')).toThrow(errMsg);
+    //     // // expect(() => sExp('/', '-0', '0', 'NaslLong')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '0', '0', 'NaslLong')).toThrow(errMsg);
 
-    //     expect(sExp('/', '12', '12', 'NaslDecimal')?.__str).toBe('1');
-    //     expect(sExp('/', '2.0', '2', 'NaslDecimal')?.__str).toBe('1.0');
-    //     expect(sExp('+', '0.06', '0.04', 'NaslDecimal')?.__str).toBe('0.10');
-    //     expect(sExp('+', '0.05', '-0.05', 'NaslDecimal')?.__str).toBe('0.00');
-    //     expect(sExp('+', '-0.05', '0.05', 'NaslDecimal')?.__str).toBe('0.00');
-    //     expect(sExp('*', '1.2', '0.8', 'NaslDecimal')?.__str).toBe('0.96');
-    //     expect(sExp('*', '2.0', '2', 'NaslDecimal')?.__str).toBe('4.0');
-    //     expect(sExp('/', '1', '3', 'NaslDecimal')?.__str).toBe('0.33333333333333333333');
-    //     expect(sExp('/', '0.5', '0.02', 'NaslDecimal')?.__str).toBe('25');
-    //     expect(sExp('*', '0.19', '0.190', 'NaslDecimal')?.__str).toBe('0.03610');
-    //     expect(sExp('%', '2.66', '-0.2', 'NaslDecimal')?.__str).toBe('0.06');
-    //     expect(sExp('%', '-2.66', '0.2', 'NaslDecimal')?.__str).toBe('-0.06');
-    //     // expect(() => sExp('/', '1', '0', 'NaslDecimal')).toThrow(Error);
-    //     // expect(() => sExp('/', '1', '0', 'NaslDecimal')).toThrow(errMsg);
-    //     // expect(() => sExp('/', '-0', '0', 'NaslDecimal')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '2.66', '0', 'NaslDecimal')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '0', '0', 'NaslDecimal')).toThrow(errMsg);
-    //     expect(sExp('/', '0.5', '0.02', 'NaslDecimal', 'String')?.__str).toBe('25');
-    //     expect(sExp('%', '2.66', '-0.2', 'NaslDecimal', 'String')?.__str).toBe('0.06');
-    //     expect(sExp('%', '-2.66', '0.2', 'NaslDecimal', 'String')?.__str).toBe('-0.06');
-    //     // expect(() => sExp('/', '1', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
-    //     // expect(() => sExp('/', '-0', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '2.66', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
-    //     // expect(() => sExp('%', '0', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
-    // });
+    //     // expect(sExp('/', '10', '2', 'NaslLong', 'String')?.valueOf()).toBe('5');
+    //     // // expect(() => sExp('/', '1', '0', 'NaslLong', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('/', '-0', '0', 'NaslLong', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '0', '0', 'NaslLong', 'String')).toThrow(errMsg);
+
+    //     // expect(sExp('/', '12', '12', 'NaslDecimal')?.valueOf()).toBe('1');
+    //     // expect(sExp('/', '2.0', '2', 'NaslDecimal')?.valueOf()).toBe('1.0');
+    //     // expect(sExp('+', '0.06', '0.04', 'NaslDecimal')?.valueOf()).toBe('0.10');
+    //     // expect(sExp('+', '0.05', '-0.05', 'NaslDecimal')?.valueOf()).toBe('0.00');
+    //     // expect(sExp('+', '-0.05', '0.05', 'NaslDecimal')?.valueOf()).toBe('0.00');
+    //     // expect(sExp('*', '1.2', '0.8', 'NaslDecimal')?.valueOf()).toBe('0.96');
+    //     // expect(sExp('*', '2.0', '2', 'NaslDecimal')?.valueOf()).toBe('4.0');
+    //     // expect(sExp('/', '1', '3', 'NaslDecimal')?.valueOf()).toBe('0.33333333333333333333');
+    //     // expect(sExp('/', '0.5', '0.02', 'NaslDecimal')?.valueOf()).toBe('25');
+    //     // expect(sExp('*', '0.19', '0.190', 'NaslDecimal')?.valueOf()).toBe('0.03610');
+    //     // expect(sExp('%', '2.66', '-0.2', 'NaslDecimal')?.valueOf()).toBe('0.06');
+    //     // expect(sExp('%', '-2.66', '0.2', 'NaslDecimal')?.valueOf()).toBe('-0.06');
+    //     // // expect(() => sExp('/', '1', '0', 'NaslDecimal')).toThrow(Error);
+    //     // // expect(() => sExp('/', '1', '0', 'NaslDecimal')).toThrow(errMsg);
+    //     // // expect(() => sExp('/', '-0', '0', 'NaslDecimal')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '2.66', '0', 'NaslDecimal')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '0', '0', 'NaslDecimal')).toThrow(errMsg);
+    //     // expect(sExp('/', '0.5', '0.02', 'NaslDecimal', 'String')?.valueOf()).toBe('25');
+    //     // expect(sExp('%', '2.66', '-0.2', 'NaslDecimal', 'String')?.valueOf()).toBe('0.06');
+    //     // expect(sExp('%', '-2.66', '0.2', 'NaslDecimal', 'String')?.valueOf()).toBe('-0.06');
+    //     // // expect(() => sExp('/', '1', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('/', '-0', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '2.66', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
+    //     // // expect(() => sExp('%', '0', '0', 'NaslDecimal', 'String')).toThrow(errMsg);
+    });
 
     // test('comparisonOperator', () => {
     //     const variable1 = new window.NaslDecimal('2.100');
@@ -186,56 +254,8 @@ describe('global/app/packingType', () => {
     //     expect(sExp('-', 'NaN', '0.12', 'String', 'NaslDecimal')).toBe(NaN);
     //     expect(sExp('-', '0.12', 'NaN', 'NaslDecimal', 'String')).toBe(NaN);
 
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslLong')).toBe(NaN);
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslLong', 'String')).toBe(NaN);
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslLong', 'String')).toBe(NaN);
-    //     expect(sExp('+', 'undefined', 'NaN', 'NaslLong', 'String')).toBe('undefinedNaN');
-
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslDecimal')).toBe(NaN);
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslDecimal', 'String')).toBe(NaN);
-    //     expect(sExp('-', 'undefined', 'NaN', 'NaslDecimal', 'String')).toBe(NaN);
-    //     expect(sExp('+', 'undefined', 'NaN', 'NaslDecimal', 'String')).toBe('undefinedNaN');
-
-    //     expect(naslAdd(null, '1')).toBe('null1');
-    //     expect(naslAdd('1', null)).toBe('1null');
-    //     expect(naslAdd(undefined, '1')).toBe('undefined1');
-    //     expect(naslAdd('1', undefined)).toBe('1undefined');
-
-    //     expect(naslAdd(undefined, cnd('1'))).toBe(NaN);
-    //     expect(naslAdd(cnd('1'), undefined)).toBe(NaN);
-    //     expect(naslAdd(undefined, new NaslLong('1'))).toBe(NaN);
-    //     expect(naslAdd(new NaslLong('1'), undefined)).toBe(NaN);
-
-    //     expect(naslAdd(null, cnd('1'))).toEqual(cnd('1'));
-    //     expect(naslAdd(cnd('1'), null)).toEqual(cnd('1'));
-    //     expect(naslAdd(null, new NaslLong('1'))).toEqual(new NaslLong('1'));
-    //     expect(naslAdd(new NaslLong('1'), null)).toEqual(new NaslLong('1'));
-
-    //     expect(naslTimes(new NaslLong('10'), null)).toEqual(new NaslLong('0'));
-    //     expect(naslDividedBy(new NaslLong('10'), null)).toBe(Infinity);
-
-    //     expect(sExp('/', '1', '0', 'NaslDecimal', 'String')).toBe(Infinity);
-    //     expect(sExp('/', '-0', '0', 'NaslDecimal', 'String')).toBe(NaN);
-    //     expect(sExp('%', '2.66', '0', 'NaslDecimal', 'String')).toBe(NaN);
-    //     expect(sExp('%', '0', '0', 'NaslDecimal', 'String')).toBe(NaN);
     // });
 
-    // test('< 3.3.x 关系运算兼容性测试', () => {
-    //     expect(naslEquals(undefined, cnd('undefined'))).toBe(true);
-    //     expect(naslEquals(undefined, new NaslLong('undefined'))).toBe(true);
-
-    //     expect(naslLessThan(cnd('1.1'), NaN)).toBe(false);
-    //     expect(naslLessThan('1.1', NaN)).toBe(false);
-    //     expect(naslGreaterThan(cnd('1.1'), null)).toBe(true);
-    //     expect(naslGreaterThanOrEqual(cnd('0'), null)).toBe(true);
-    //     expect(naslLessThanOrEqual(cnd('0'), null)).toBe(true);
-    //     expect(naslLessThanOrEqual(undefined, undefined)).toBe(false);
-    //     expect(naslEquals(cnd('0'), null)).toBe(false);
-    //     expect(naslEquals(undefined, undefined)).toBe(true);
-    //     expect(naslEquals(null, null)).toBe(true);
-    //     expect(naslNotEqual(undefined, undefined)).toBe(false);
-    //     expect(naslNotEqual(null, null)).toBe(false);
-    // });
 
 
     // {
@@ -247,21 +267,21 @@ describe('global/app/packingType', () => {
     // {
     //     let x = new Decimal('0.06')
     //     let y = new Decimal('0.04')
-    //     let z = x.plus(y)
+    //     let z = x.add(y)
     //     console.log(z)
     // }
 
     // {
     //     let x = new Decimal('0.05')
     //     let y = new Decimal('-0.05')
-    //     let z = x.plus(y)
+    //     let z = x.add(y)
     //     console.log(z)
     // }
 
     // {
     //     let x = new Decimal('-0.05')
     //     let y = new Decimal('0.05')
-    //     let z = x.plus(y)
+    //     let z = x.add(y)
     //     console.log(z)
     // }
 
