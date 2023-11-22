@@ -1,4 +1,4 @@
-if (typeof T === 'undefined') require('../setup');
+import T from '../setup'
 
 T('sum', function () {
   var expected;
@@ -16,7 +16,7 @@ T('sum', function () {
   t(11, -11);
   t(1, '2', new Decimal(3), new Decimal('4'), -10);
   t(new Decimal(-10), '9', new Decimal(0.01), 0.99);
-  
+
   expected = new Decimal(10);
 
   t('10');

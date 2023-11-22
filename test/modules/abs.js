@@ -1,9 +1,11 @@
-if (typeof T === 'undefined') require('../setup');
+import { createNaslDecimal } from '../../src/NaslDecimal.js';
+import { T } from '../setup'
+import { Decimal } from '../../src/decimal.js';
 
 T('absoluteValue', function () {
 
   function t(expected, value){
-    T.assertEqual(expected, new Decimal(value).abs().valueOf());
+    T.assertEqual(expected, createNaslDecimal(value).abs().valueOf());
   }
 
   Decimal.config({
@@ -39,10 +41,10 @@ T('absoluteValue', function () {
   t('99', -99);
   t('999.999', 999.999);
   t('999.999', '-999.999');
-  t('1', new Decimal(-1));
-  t('1', new Decimal('-1'));
-  t('0.001', new Decimal(0.001));
-  t('0.001', new Decimal('-0.001'));
+  t('1', createNaslDecimal(-1));
+  t('1', createNaslDecimal('-1'));
+  t('0.001', createNaslDecimal(0.001));
+  t('0.001', createNaslDecimal('-0.001'));
 
   t('Infinity', Infinity);
   t('Infinity', -Infinity);

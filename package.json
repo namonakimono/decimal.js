@@ -44,17 +44,19 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "test-nasl-decimal": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/NaslDecimal.spec.mjs && node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/NaslDecimal.spec.mjs --coverage"
+    "babel": "./node_modules/.bin/babel src --out-dir lib/src && ./node_modules/.bin/babel test --out-dir lib/test",
+    "test": "npm run babel && node ./lib/test/test.js",
+    "test-nasl-decimal": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/NaslDecimal.spec.mjs --coverage"
   },
   "types": "decimal.d.ts",
-  "files": [
-    "decimal.js",
-    "decimal.mjs",
-    "decimal.d.ts",
-    "NaslDecimal.js"
-  ],
   "devDependencies": {
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "core-js": "^3.33.3"
   }
 }

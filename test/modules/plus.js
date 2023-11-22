@@ -1,4 +1,4 @@
-if (typeof T === 'undefined') require('../setup');
+import T from '../setup'
 
 T('plus', function () {
 
@@ -87,7 +87,6 @@ T('plus', function () {
   t(1, '1', '2');
   t(1, '-45', '-44');
   t(1, '22', '23');
-  t(1, 0144, '101');
   t(1, '0144', '145');
   t(1, '6.1915', '7.1915');
   t(1, '-1.02', '-0.02');

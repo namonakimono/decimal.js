@@ -1,4 +1,4 @@
-if (typeof T === 'undefined') require('../setup');
+import T from '../setup'
 
 T('random', function () {
   var i, sd, maxDigits;

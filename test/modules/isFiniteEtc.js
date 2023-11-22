@@ -1,4 +1,4 @@
-if (typeof T === 'undefined') require('../setup');
+import T from '../setup'
 
 T('isFinite, isInteger, isNaN, isNegative, isZero, isDecimal', function () {
 

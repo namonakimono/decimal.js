@@ -1,5 +1,5 @@
 import util from 'util';
-import { createNaslDecimal as cnd, NaslDecimal } from '../NaslDecimal.mjs';
+import { createNaslDecimal as cnd, NaslDecimal } from '../src/NaslDecimal.mjs';
 
 
 describe('global/app/packingType', () => {

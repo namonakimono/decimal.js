@@ -1,6 +1,6 @@
 // Adds global: T
 
-T = (function () {
+export const T = (function () {
   var passed, testNumber, write;
 
   function T(name, tests) {
@@ -20,7 +20,7 @@ T = (function () {
       document.body.innerHTML += str.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
     };
   } else {
-    Decimal = require('../decimal');
+    const Decimal = require('../src/decimal');
     write = process.stdout.write.bind(process.stdout);
   }
 

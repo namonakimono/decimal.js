@@ -1,6 +1,6 @@
 // Tests immutability of operand[s] for all applicable methods.
 // Also tests each Decimal.prototype method against its equivalent Decimal method where applicable.
-if (typeof T === 'undefined') require('../setup');
+import T from '../setup'
 
 T('immutability', function () {
 

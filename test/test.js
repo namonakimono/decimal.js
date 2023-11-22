@@ -1,3 +1,5 @@
+import { T } from './setup'
+
 var time = new Date(),
   passed = 0,
   total = 0;

@@ -1,6 +1,6 @@
 "use strict";
 
-import Decimal from './decimal.mjs';
+import Decimal from './decimal.js';
 
 const toNumberIfPossible = (v) => {
   if (['null', 'NaN', 'Infinity', '-Infinity', 'undefined'].includes(v)) {
